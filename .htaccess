@@ -1,0 +1,17 @@
+RewriteEngine On
+RewriteBase /
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(.+)$ index.php [QSA,L]
+RewriteRule ^YUB/$  / xhr/response.php [QSA,NC,L] 
+RewriteRule  ^api2$   /Api/auth.php [NC,L]
+
+RewriteRule ^Api/(.+)  /$1
+#RewriteCond %{REQUEST_URI} !^/Api         
+
+#RewriteCond         "%{DOCUMENT_ROOT}/Api/%{REQUEST_URI}"  -f
+#RewriteRule   Api  "%{DOCUMENT_ROOT}/Api/$1"  [L]
+
+#   sinon, on continue la recherche avec d'autres directives Alias
+#   ou ScriptAlias, etc...
+#RewriteRule   "^"  "-"  [PT]

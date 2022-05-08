@@ -1,0 +1,11 @@
+
+
+Options All -Indexes -MultiViews
+RewriteEngine on
+RewriteBase /Api/
+
+RewriteCond %{REQUEST_FILENAME} !-d 
+RewriteCond %{DOCUMENT_ROOT}/Api/$1\.php -f [NC] 
+RewriteRule ^(.+?)/?$ $1.php [L]  
+
+#RewriteRule  ^api$   auth.php [NC,L]

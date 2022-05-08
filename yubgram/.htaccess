@@ -1,0 +1,90 @@
+RewriteEngine On
+RewriteBase /
+#http://localhost:82/yubgram/
+ErrorDocument 404 http://localhost:9098/sources/not-found.php          
+RewriteCond %{REQUEST_METHOD} !POST
+RewriteCond %{THE_REQUEST} \s/+(.+?)\.php[\s?] [NC]
+RewriteRule ^ /%1 [R=302,NE,L]
+	
+RewriteCond %{REQUEST_METHOD} !POST
+RewriteCond %{THE_REQUEST} /index\.php [NC]
+RewriteRule ^(.*)index\.php$ /$1 [L,R=302,NC,NE]
+	
+RewriteCond %{REQUEST_FILENAME} -d [OR]
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteRule ^ - [L]
+#RewriteRule !\.(js|ico|gif|jpg|png|css)$ index.php
+
+RewriteRule ^hashtag/([^/]+)/?$ hashtags.php?tag=$1 [L,QSA]
+RewriteRule ^settings/([\w-]+)/?$ settings.php?set=$1 [L,QSA]
+RewriteRule ^credit/([\w-]+)/?$ buyCredit.php?cr=$1 [L,QSA]
+RewriteRule ^your-ads/([\w-]+)/?$ of-ads.php?cr=$1 [L,QSA]
+RewriteRule ^status/([^/]+)/?$ status.php?msgID=$1 [L,QSA]
+RewriteRule ^chat/([\w-]+)/?$ chat.php?with=$1 [L,QSA]
+RewriteRule ^account/([\w-]+)/?$ sources/index.php?get=$1 [L,QSA]
+RewriteRule ^dashboard/([\w-]+)/?$ admin/index.php?set=$1 [L,QSA]
+RewriteRule ^profile/([^/]+)/?$ profile.php?username=$1 [L,QSA,NC]  
+RewriteRule ^mymarket/([^/]+)/?$ market.php?marketid=$1 [L,QSA,NC]
+RewriteRule ^mymarket/(sold|about)/([^/]+)/?$ market.php?marketid=$2 [L,QSA,NC]
+RewriteRule ^profile/(followers|friends|saved|stories)/([^/]+)/?$ $1.php?username=$2 [L,QSA,NC] 
+RewriteRule ^event/([^/]+)/?$ event.php?eventID=$1 [L,QSA,NC] 
+RewriteRule ^events/([\w-]+)/?$ events.php?p=$1 [L,QSA,NC]  
+RewriteRule ^product/([^/]+)/?$ product.php?productid=$1 [L,QSA]  
+
+RewriteRule ^marketplace/(category)/([^/]+)/?$ marketplace.php?category=$2 [L,QSA,NC]
+RewriteRule ^marketplace/(search)/([^/]+)/?$ marketplace.php?sproduct=$2 [L,QSA,NC]
+	
+RewriteCond %{REQUEST_FILENAME}.php -f
+RewriteRule ^(.+?)/?$ $1.php [L] 
+
+<IfModule mod_headers.c>
+Header set Access-Control-Allow-Origin '*'
+</IfModule>
+
+RemoveHandler .html .htm
+AddType application/x-httpd-php .php .html .htm
+
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html
+  AddOutputFilterByType DEFLATE text/css
+  AddOutputFilterByType DEFLATE text/javascript
+  AddOutputFilterByType DEFLATE text/xml
+  AddOutputFilterByType DEFLATE text/plain
+  AddOutputFilterByType DEFLATE image/x-icon
+  AddOutputFilterByType DEFLATE image/svg+xml
+  AddOutputFilterByType DEFLATE application/rss+xml
+  AddOutputFilterByType DEFLATE application/javascript
+  AddOutputFilterByType DEFLATE application/x-javascript
+  AddOutputFilterByType DEFLATE application/xml
+  AddOutputFilterByType DEFLATE application/xhtml+xml
+  AddOutputFilterByType DEFLATE application/x-font
+  AddOutputFilterByType DEFLATE application/x-font-truetype
+  AddOutputFilterByType DEFLATE application/x-font-ttf
+  AddOutputFilterByType DEFLATE application/x-font-otf
+  AddOutputFilterByType DEFLATE application/x-font-opentype
+  AddOutputFilterByType DEFLATE application/vnd.ms-fontobject
+  AddOutputFilterByType DEFLATE font/ttf
+  AddOutputFilterByType DEFLATE font/otf
+  AddOutputFilterByType DEFLATE font/opentype
+  BrowserMatch ^Mozilla/4 gzip-only-text/html
+  BrowserMatch ^Mozilla/4\.0[678] no-gzip
+  BrowserMatch \bMSIE !no-gzip !gzip-only-text/html
+</IfModule>
+<IfModule mod_security.c>
+  SecFilterScanPOST Off
+</IfModule>
+
+## EXPIRES CACHING ##
+<IfModule mod_expires.c>
+ExpiresActive On
+ExpiresByType image/jpg 'access plus 1 year'
+ExpiresByType image/jpeg 'access plus 1 year'
+ExpiresByType image/gif 'access plus 1 year'
+ExpiresByType image/png 'access plus 1 year'
+ExpiresByType text/css 'access plus 1 month'
+ExpiresByType application/pdf 'access plus 1 month'
+ExpiresByType text/x-javascript 'access plus 1 month'
+ExpiresByType application/x-shockwave-flash 'access plus 1 month'
+ExpiresByType image/x-icon 'access plus 1 year'
+ExpiresDefault 'access plus 2 days'
+</IfModule>
